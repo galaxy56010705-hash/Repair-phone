@@ -1,0 +1,16 @@
+services:
+  web:
+    image: php:8.3-cli
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    command: ["php", "-S", "0.0.0.0:3000", "-t", "/app"]
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(str_contains(file_get_contents('http://127.0.0.1:3000/'), 'PHP Calculator') ? 0 : 1);"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
